@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   DndContext,
   closestCenter,
@@ -10,17 +10,21 @@ import {
   useSensors,
   DragEndEvent,
   DragOverlay,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   horizontalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
-import { MapIcon, MusicalNoteIcon, ChatBubbleBottomCenterIcon } from '@heroicons/react/24/outline';
-import Sidebar from './Sidebar';
-import Panel from './Panel';
+} from "@dnd-kit/sortable";
+import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
+import {
+  MapIcon,
+  MusicalNoteIcon,
+  ChatBubbleBottomCenterIcon,
+} from "@heroicons/react/24/outline";
+import Sidebar from "./Sidebar";
+import Panel from "./Panel";
 
 export interface PanelType {
   id: string;
@@ -31,9 +35,14 @@ export interface PanelType {
 
 export default function DraggablePanels() {
   const [panels, setPanels] = useState<PanelType[]>([
-    { id: 'map', title: 'Map', icon: MapIcon, isOpen: true },
-    { id: 'music', title: 'Music', icon: MusicalNoteIcon, isOpen: true },
-    { id: 'chat', title: 'Chat', icon: ChatBubbleBottomCenterIcon, isOpen: true },
+    { id: "map", title: "Map", icon: MapIcon, isOpen: true },
+    { id: "music", title: "Music", icon: MusicalNoteIcon, isOpen: true },
+    {
+      id: "chat",
+      title: "Chat",
+      icon: ChatBubbleBottomCenterIcon,
+      isOpen: true,
+    },
   ]);
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -76,7 +85,9 @@ export default function DraggablePanels() {
   };
 
   const openPanels = panels.filter((panel) => panel.isOpen);
-  const activePanel = activeId ? openPanels.find((p) => p.id === activeId) : null;
+  const activePanel = activeId
+    ? openPanels.find((p) => p.id === activeId)
+    : null;
 
   return (
     <div className="flex h-full w-full">
@@ -107,17 +118,17 @@ export default function DraggablePanels() {
           <DragOverlay
             dropAnimation={{
               duration: 350,
-              easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
             }}
           >
             {activePanel ? (
               <div className="flex flex-col min-w-[450px] flex-1 h-full bg-white border-r border-gray-200 opacity-80">
                 <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-                  <h2 className="text-lg font-medium text-gray-900">{activePanel.title}</h2>
+                  <h2 className="text-lg font-medium text-gray-900">
+                    {activePanel.title}
+                  </h2>
                 </div>
-                <div className="flex-1 p-4 bg-gray-50">
-                  {activePanel.title}
-                </div>
+                <div className="flex-1 p-4 bg-gray-50">{activePanel.title}</div>
               </div>
             ) : null}
           </DragOverlay>

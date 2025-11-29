@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { PanelType } from './DraggablePanels';
+import { PanelType } from "./DraggablePanels";
 
 interface SidebarProps {
   panels: PanelType[];
@@ -17,7 +17,7 @@ export default function Sidebar({ panels, onTogglePanel }: SidebarProps) {
             key={panel.id}
             onClick={() => onTogglePanel(panel.id)}
             className={`flex flex-col items-center justify-center py-4 px-2 gap-1 border-b border-gray-200 transition-all hover:bg-gray-50 ${
-              panel.isOpen ? 'text-gray-900' : 'text-gray-300'
+              panel.isOpen ? "text-gray-900" : "text-gray-300"
             }`}
           >
             <Icon className="w-6 h-6" />

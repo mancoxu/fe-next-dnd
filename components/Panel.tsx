@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useSortable, defaultAnimateLayoutChanges } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { PanelType } from './DraggablePanels';
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { PanelType } from "./DraggablePanels";
 
 interface PanelProps {
   panel: PanelType;
@@ -11,19 +11,14 @@ interface PanelProps {
 }
 
 export default function Panel({ panel, onClose }: PanelProps) {
-  const {
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: panel.id,
-    transition: {
-      duration: 350,
-      easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-    },
-  });
+  const { listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({
+      id: panel.id,
+      transition: {
+        duration: 350,
+        easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+      },
+    });
 
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
@@ -52,9 +47,7 @@ export default function Panel({ panel, onClose }: PanelProps) {
           <XMarkIcon className="w-5 h-5 text-gray-500" />
         </button>
       </div>
-      <div className="flex-1 p-4 bg-gray-50">
-        {panel.title}
-      </div>
+      <div className="flex-1 p-4 bg-gray-50">{panel.title}</div>
     </div>
   );
 }
