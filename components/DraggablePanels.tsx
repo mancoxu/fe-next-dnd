@@ -9,6 +9,7 @@ import {
   useSensor,
   useSensors,
   DragEndEvent,
+  DragOverlay,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -16,6 +17,7 @@ import {
   sortableKeyboardCoordinates,
   horizontalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
 import { MapIcon, MusicalNoteIcon, ChatBubbleBottomCenterIcon } from '@heroicons/react/24/outline';
 import Sidebar from './Sidebar';
 import Panel from './Panel';
@@ -33,6 +35,7 @@ export default function DraggablePanels() {
     { id: 'music', title: 'Music', icon: MusicalNoteIcon, isOpen: true },
     { id: 'chat', title: 'Chat', icon: ChatBubbleBottomCenterIcon, isOpen: true },
   ]);
+  const [activeId, setActiveId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -45,6 +48,10 @@ export default function DraggablePanels() {
     })
   );
 
+  const handleDragStart = (event: DragEndEvent) => {
+    setActiveId(event.active.id as string);
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -56,6 +63,8 @@ export default function DraggablePanels() {
         return arrayMove(items, oldIndex, newIndex);
       });
     }
+
+    setActiveId(null);
   };
 
   const togglePanel = (id: string) => {
@@ -67,6 +76,7 @@ export default function DraggablePanels() {
   };
 
   const openPanels = panels.filter((panel) => panel.isOpen);
+  const activePanel = activeId ? openPanels.find((p) => p.id === activeId) : null;
 
   return (
     <div className="flex h-full w-full">
@@ -76,7 +86,9 @@ export default function DraggablePanels() {
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
+          modifiers={[restrictToHorizontalAxis]}
         >
           <SortableContext
             items={openPanels.map((p) => p.id)}
@@ -92,6 +104,23 @@ export default function DraggablePanels() {
               ))}
             </div>
           </SortableContext>
+          <DragOverlay
+            dropAnimation={{
+              duration: 350,
+              easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            }}
+          >
+            {activePanel ? (
+              <div className="flex flex-col min-w-[450px] flex-1 h-full bg-white border-r border-gray-200 opacity-80">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+                  <h2 className="text-lg font-medium text-gray-900">{activePanel.title}</h2>
+                </div>
+                <div className="flex-1 p-4 bg-gray-50">
+                  {activePanel.title}
+                </div>
+              </div>
+            ) : null}
+          </DragOverlay>
         </DndContext>
       </div>
     </div>

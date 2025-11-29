@@ -1,6 +1,6 @@
 'use client';
 
-import { useSortable } from '@dnd-kit/sortable';
+import { useSortable, defaultAnimateLayoutChanges } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { PanelType } from './DraggablePanels';
@@ -17,12 +17,18 @@ export default function Panel({ panel, onClose }: PanelProps) {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: panel.id });
+  } = useSortable({
+    id: panel.id,
+    transition: {
+      duration: 350,
+      easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+    },
+  });
 
-  const style = {
+  const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : 1,
+    opacity: isDragging ? 0 : 1,
   };
 
   return (
